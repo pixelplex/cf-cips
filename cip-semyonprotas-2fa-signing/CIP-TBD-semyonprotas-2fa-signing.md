@@ -365,6 +365,24 @@ invalid user signature, wrong `actAs`, missing or too distant
 `max_record_time`, invalid recovery key signature, co-signer key still in
 the new topology, expired challenge, wrong code, and attempt limit reached.
 
+#### Interface evolution
+
+Non-breaking changes to the co-signer interface MAY be made by later
+revisions of this CIP or by CIPs that list it in `Requires`, without an
+amendment to this CIP. A change is non-breaking when it adds an optional
+parameter, an optional result field, a new error or a new method, and a
+wallet or co-signer that ignores the addition keeps working as before.
+
+- A co-signer MUST ignore optional parameters it does not support, unless
+  its policy needs them to sign. In that case it MUST refuse with an error
+  and MUST NOT ask for the second factor.
+- A wallet MUST ignore result fields and errors it does not know, and treat
+  an unknown error as a refusal.
+
+Changes that remove or change the meaning of an existing parameter, result
+or error, or that make a new parameter mandatory, are breaking and need an
+amendment to this CIP.
+
 ### Co-signer registry
 
 The registry lets any wallet find the co-signer of a 2FA party from the
@@ -632,8 +650,10 @@ will be published with the next revision of this draft.
 ## Future updates
 
 This CIP sets a minimal base. Later revisions, or CIPs that list it in
-`Requires`, can extend it, for example with more second-factor methods,
-without changing what is defined here.
+`Requires`, can extend it, for example with more second-factor methods or
+extra data sent with `requestCoSignature`, without changing what is defined
+here. Changes to the co-signer interface follow the rules in
+"Interface evolution".
 
 ## Open questions
 
